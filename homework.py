@@ -1,6 +1,7 @@
 import os
 import time
-import logging, sys
+import logging
+import sys
 import requests
 
 from http import HTTPStatus
@@ -39,12 +40,8 @@ logger.addHandler(handler)
 
 
 def check_tokens():
-    """Проверка доступности необходимых токенов"""
-    tokens = [
-        PRACTICUM_TOKEN,
-        TELEGRAM_TOKEN,
-        TELEGRAM_CHAT_ID
-        ]
+    """Проверка доступности необходимых токенов."""
+    tokens = [PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]
     for check_tokens in tokens:
         if check_tokens is None:
             message = 'Отсутствует перменная окружения!'
@@ -53,7 +50,7 @@ def check_tokens():
 
 
 def send_message(bot, message):
-    """Отправка сообщения в телеграмм"""
+    """Отправка сообщения в телеграмм."""
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logger.debug('Сообщение отправлено')
@@ -63,7 +60,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(timestamp):
-    """Получение ответа API"""
+    """Получение ответа API."""
     params = {'from_date': timestamp}
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=params)
@@ -78,7 +75,7 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """Проверка соответствия ответа API"""
+    """Проверка соответствия ответа API."""
     try:
         homeworks = response['homeworks']
     except KeyError as error:
@@ -101,10 +98,10 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """Получение статуса домашки из ответа API"""
+    """Получение статуса домашки из ответа API."""
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
-    
+
     if homework_name is None:
         logger.error('Отустствует ключ homework_name')
         raise KeyError()
@@ -124,7 +121,7 @@ def parse_status(homework):
 
 
 def main():
-    """Основная логика работы бота"""
+    """Основная логика работы бота."""
     check_tokens()
 
     week = 630117
