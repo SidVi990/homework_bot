@@ -75,7 +75,6 @@ def check_response(response):
         raise KeyError('Ошибка ключей в ответе API!')
     if not isinstance(homeworks, list):
         raise TypeError('Данные `homeworks` приходят не в виде списка!')
-    
     return homeworks
 
 
@@ -83,16 +82,14 @@ def parse_status(homework):
     """Получение статуса домашки из ответа API."""
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
-    
     if 'homework_name' not in homework:
         raise KeyError('Отсутствует ключ `homework_name`!')
     if 'status' not in homework:
         raise KeyError('Отсутствует ключ `status`!')
     if homework_status not in HOMEWORK_VERDICTS:
         raise KeyError('Неизвестный статус домашки')
-
     verdict = HOMEWORK_VERDICTS[homework_status]
-    return f'Изменился статус проверки работы "{homework_name}". {verdict}'    
+    return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
 def main():
