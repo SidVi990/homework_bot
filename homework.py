@@ -60,19 +60,19 @@ def get_api_answer(timestamp):
     except Exception as error:
         raise SystemError(f'Ошибка запроса к API: {error}')
     if response.status_code != HTTPStatus.OK:
-        message = f'Нет ответа API: {response.status_code}!'
-        raise SystemError(message)
+        raise SystemError(f'Нет ответа API: {response.status_code}!')
     return response.json()
 
 
 def check_response(response):
     """Проверка соответствия ответа API."""
-    if type(response) == dict:
-        homeworks = response.get('homeworks')
-    else:
+    if not isinstance(response, dict):
         raise TypeError('Данные получены не в виде словаря!')
-    if 'homeworks' and 'current_date' not in response:
-        raise KeyError('Ошибка ключей в ответе API!')
+    homeworks = response.get('homeworks')
+    if 'homeworks' not in response:
+        raise KeyError('Отсутствует ключ `homeworks` в ответе API!')
+    if 'current_date' not in response:
+        raise KeyError('Отсутствует ключ `current_date` в ответе API!')
     if not isinstance(homeworks, list):
         raise TypeError('Данные `homeworks` приходят не в виде списка!')
     return homeworks
